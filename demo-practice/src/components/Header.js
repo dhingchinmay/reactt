@@ -35,13 +35,19 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            News
+            Home
           </Typography>
+          <Button href="List" color="inherit">
+            List
+          </Button>
           <Button href="Login" color="inherit">
             Sign In
           </Button>
           <Button href="Registration" color="inherit">
             Sign Up
+          </Button>
+          <Button href="" color="inherit">
+            Logout
           </Button>
         </Toolbar>
       </AppBar>

@@ -1,7 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Button from "./Button";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,27 +14,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BasicTextFields() {
+export default function TextFields() {
   const classes = useStyles();
-  console.log("login page");
+
   return (
     <div style={{ textAlign: "center" }}>
-      <h1 style={{ color: "Black", fontFamily: "cursive" }}>
-        Registration Form!
-      </h1>
-      <form
-        // className={classes.root}
-        className={classes.center}
-        autoComplete="off"
-      >
-        <div style={{ margin: "10px" }}>
-          <TextField label="Email" type="email" required />
-        </div>
-        <div style={{ margin: "10px" }}>
-          <TextField label="Password" type="password" required />
-        </div>
-      </form>
-      <Button />
+      <div className="container">
+        <Container maxWidth="sm">
+          <Typography
+            component="div"
+            style={{
+              backgroundColor: "rgb(208, 214, 218)",
+              height: "50%",
+              padding: "2px",
+              margin: "2rem auto",
+              width: "100%",
+              color: "black",
+            }}
+          >
+            <h1 style={{ color: "Black", fontFamily: "sans-serif" }}>Login</h1>
+            <form
+              // className={classes.root}
+              className={classes.center}
+              autoComplete="off"
+            >
+              <div style={{ margin: "10px" }}>
+                <TextField label="Email" type="email" required />
+              </div>
+              <div style={{ margin: "10px" }}>
+                <TextField label="Password" type="password" required />
+              </div>
+            </form>
+            <Button variant="contained" color="primary" disableElevation>
+              Login
+            </Button>
+          </Typography>
+        </Container>
+      </div>
     </div>
   );
 }
