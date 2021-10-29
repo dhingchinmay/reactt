@@ -3,25 +3,32 @@ import List from "../src/components/List";
 import Registration from "../src/components/Registration";
 import "./App.css";
 import AppRoutes from "./Router/Router";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "../src/components/Login";
+// import Logout from "../src/components/Logout";
 
 function App() {
   return (
     <div>
-      <Header />
       <Router>
-        <Route path="/Registration">
-          <Registration />
-        </Route>
-        <Route path="/Login">
-          <Login />
-        </Route>
-        <Route path="/List">
-          <List />
-        </Route>
+        <Switch>
+          <Route path="/" exact>
+            <Header />
+          </Route>
+          <Route path="/Registration">
+            <Registration />
+          </Route>
+          <Route path="/Login">
+            <Login />
+          </Route>
+          <Route path="/List">
+            <List />
+          </Route>
+          {/* <Route path="/Logout">
+            <Logout />
+          </Route> */}
+        </Switch>
       </Router>
-      <AppRoutes />
     </div>
   );
 }
