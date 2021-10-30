@@ -33,20 +33,34 @@ const Header = (props) => {
           >
             <MenuIcon />
           </IconButton>
-
           <Typography variant="h6" className={classes.title}>
             Home
           </Typography>
-          <Button href="List" color="inherit">
+          <Button style={{ margin: "0 10px" }} href="/List" variant="contained">
             List
           </Button>
-          <Button href="Login" color="inherit">
+          <Button
+            style={{ margin: "0 10px" }}
+            href="AddUser"
+            variant="contained"
+          >
+            Add User
+          </Button>
+          <Button style={{ margin: "0 10px" }} href="Login" variant="contained">
             Sign In
           </Button>
-          <Button href="Registration" color="inherit">
+          <Button
+            style={{ margin: "0 10px" }}
+            href="Registration"
+            variant="contained"
+          >
             Sign Up
           </Button>
-          <Button href="" color="inherit">
+          <Button
+            style={{ margin: "0 10px" }}
+            href="Logout"
+            variant="contained"
+          >
             Logout
           </Button>
         </Toolbar>

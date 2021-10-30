@@ -10,8 +10,7 @@ export default function AppRoutes() {
       <div>
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-        <Switch>
-          {/* <Route path="/Login">
+        {/* <Route path="/Login">
             <Login />
           </Route>
           <Route path="/Registration">
@@ -20,7 +19,6 @@ export default function AppRoutes() {
           <Route path="/List">
             <List />
           </Route> */}
-        </Switch>
       </div>
     </Router>
   );
