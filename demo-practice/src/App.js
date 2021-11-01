@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "../src/components/Login";
 import Adduser from "../src/components/Adduser";
 // import Logout from "../src/components/Logout";
-
+// import { useHistory } from "react-router";
 function App() {
   return (
     <div>

@@ -3,8 +3,8 @@ import { baseUrl } from "../assets/js/helpers";
 
 export default class Logout extends Component {
   logout = () => {
-    window.localStorage.clear();
-    window.location.href = baseUrl + "login";
+    localStorage.clear();
+    window.location.href = "/Login";
   };
 
   render() {

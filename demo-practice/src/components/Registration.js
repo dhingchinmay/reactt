@@ -65,7 +65,7 @@ const BasicTextFields = (props) => {
   //     });
   //   // console.log(JSON.stringify(data));
   // };
-  console.log("errors", errors);
+  // console.log("errors", errors);
   const checkDisable = () => {
     if (errors.email || errors.name || errors.password) {
       return true;
@@ -73,18 +73,19 @@ const BasicTextFields = (props) => {
   };
   return (
     <>
-      <Header></Header>
+      {/* <Header></Header> */}
       <div style={{ textAlign: "center" }}>
         <Container maxWidth="sm">
           <Typography
             component="div"
             style={{
-              backgroundColor: "rgb(169,169,169)",
+              backgroundColor: "rgb(208, 214, 218)",
               height: "330px",
               padding: "15%",
               margin: "2rem auto",
               width: "350px",
               color: "black",
+              borderRadius: "40px",
             }}
           >
             <h1 style={{ color: "Black", fontFamily: "sans-serif" }}>
@@ -107,6 +108,7 @@ const BasicTextFields = (props) => {
                   onChange={handleChange}
                   error={!!touched.name && !!errors.name}
                   helperText={touched.name && errors.name}
+                  // onClick={click}
                   required
                 />
               </div>

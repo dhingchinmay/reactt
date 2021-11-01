@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 // import { useState } from "react";
 import React from "react";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 // import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -11,6 +12,19 @@ import Button from "@material-ui/core/Button";
 import Header from "./Header";
 import { connect } from "react-redux";
 import { setList } from "./store/actions/uiActions";
+// import React from "react";
+// import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import "./List.css";
+
 // import { Paper } from "@material-ui/core";
 // import { display } from "@mui/system";
 
@@ -31,6 +45,10 @@ function ListDividers(props) {
     setOpen(true);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const [open, setOpen] = React.useState(false);
 
   useEffect(function () {
@@ -47,39 +65,26 @@ function ListDividers(props) {
   return (
     <>
       <Header></Header>
-      <Button
-        value="Submit"
-        variant="contained"
-        color="primary"
-        onClick={handleClickOpen}
-      >
-        Add User
-      </Button>
       {employeeList.length !== 0 &&
         employeeList.map((val, count) => {
           return (
-            <div className="list-display">
+            <div
+              style={{
+                margin: "2px",
+                backgroundColor: "whiteSmoke",
+                boxSizing: "border-box",
+                borderRadius: "10px",
+              }}
+            >
+              {/* border: "2px black solid" */}
+              {/* <div className="list-display"> */}
               <ListItem
                 key={count}
-                // style={{ margin: "2px", border: "2px blue solid" }}
                 component="nav"
                 aria-label="mailbox folders"
               >
-                {/* <li style={{ padding: "1px" }}></li>   */}
                 <div style={{ width: "33%" }}>{val.name}</div>
-                {/* <li style={{ padding: "1px" }}>{val.email}</li> */}
-
                 <div style={{ width: "33%" }}>{val.email}</div>
-
-                {/* <Button
-                  style={{ display: "flex", justifyContent: "right" }}
-                  onClick={() => {}}
-                  value="Submit"
-                  variant="contained"
-                  color="primary"
-                >
-                  Edit
-                </Button> */}
                 <div
                   style={{
                     width: "33%",
@@ -88,23 +93,87 @@ function ListDividers(props) {
                     justifyContent: "flex-end",
                   }}
                 >
-                  <Button
+                  {/* <Button
                     style={{ margin: "0 10px" }}
-                    onClick={() => {}}
+                    onClick={handleClickOpen}
                     value="Submit"
                     variant="contained"
                     color="primary"
                   >
                     Edit
-                  </Button>
-                  <Button
-                    onClick={() => {}}
-                    value="Submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                    Delete
-                  </Button>
+                  </Button> */}
+
+                  <div>
+                    <EditIcon
+                      style={{ margin: "0 30px" }}
+                      onClick={handleClickOpen}
+                    />
+                    {/* <Button
+                      style={{ margin: "0 10px" }}
+                      value="Submit"
+                      variant="contained"
+                      color="primary"
+                      onClick={handleClickOpen}
+                    >
+                      Edit
+                    </Button> */}
+
+                    {/* <DeleteForeverIcon /> */}
+                    {/* </Grid> */}
+                    <DeleteIcon />
+                    {/* <Button
+                      onClick={() => {}}
+                      value="Submit"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Delete
+                    </Button> */}
+
+                    <Dialog
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="form-dialog-title"
+                    >
+                      <DialogTitle id="form-dialog-title">
+                        Edit Form
+                      </DialogTitle>
+                      <DialogContent>
+                        {/* <DialogContentText>Edit Fields</DialogContentText> */}
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="name"
+                          label="Name"
+                          type="email"
+                          fullWidth
+                        />
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="email"
+                          label="Email"
+                          type="email"
+                          fullWidth
+                        />
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="password"
+                          label="Password"
+                          fullWidth
+                        />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                          Cancel
+                        </Button>
+                        <Button onClick={handleClose} color="primary">
+                          Update
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </div>
                 </div>
               </ListItem>
             </div>
@@ -112,9 +181,6 @@ function ListDividers(props) {
         })}
     </>
   );
-  // (
-  //
-  // )
 }
 
 const mapStateToProps = (state) => {
