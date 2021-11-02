@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { login } from "./store/actions/uiActions";
 import "./Login.css";
 import { withRouter } from "react-router";
+import Link from "@material-ui/core/Link";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -81,78 +82,111 @@ const TextFields = (props) => {
 
   return (
     <>
-      {/* <Header></Header> */}
-      <div style={{ textAlign: "center" }}>
-        <Container maxWidth="sm">
-          <div className="container">
-            <Typography
-              component="div"
-              style={{
-                backgroundColor: "rgb(208, 214, 218)",
-                height: "250px",
-                padding: "15%",
-                margin: "2rem auto",
-                width: "250px",
-                color: "black",
-                borderRadius: "40px",
-              }}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
+        {/* <Header></Header> */}
+        <div
+          style={{
+            backgroundColor: "White",
+            height: "70%",
+            width: "50%",
+            borderRadius: "10px",
+            boxShadow: "2px 2px 5px black",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            component="div"
+            // style={{
+            //   backgroundColor: "rgb(208, 214, 218)",
+            //   height: "250px",
+            //   padding: "15%",
+            //   margin: "2rem auto",
+            //   width: "370px",
+            //   color: "black",
+            //   borderRadius: "20px",
+            // }}
+          >
+            <h1 style={{ color: "Black", fontFamily: "Arial" }}>Login</h1>
+            <form
+              // className={classes.root}
+              className={classes.center}
+              autoComplete="off"
             >
-              <h1 style={{ color: "Black", fontFamily: "sans-serif" }}>
-                Login
-              </h1>
-              <form
-                // className={classes.root}
-                className={classes.center}
-                autoComplete="off"
-              >
-                <div style={{ margin: "10px" }}>
-                  <TextField
-                    error
-                    id="email"
-                    name="email"
-                    label="Email"
-                    type="email"
-                    value={values.email}
-                    onBlur={handleBlur}
-                    error={!!touched.email && !!errors.email}
-                    helperText={touched.email && errors.email}
-                    // error={formik.errors.email}
-                    variant="outlined"
-                    margin="dense"
-                    onChange={handleChange}
-                    // value={formik.values.email}
-                    required
-                  />
-                </div>
-                <div style={{ margin: "10px" }}>
-                  <TextField
-                    id="password"
-                    label="Password"
-                    type="password"
-                    requiredlabel="Password"
-                    variant="outlined"
-                    margin="dense"
-                    onChange={handleChange}
-                    value={values.password}
-                    onBlur={handleBlur}
-                    error={!!touched.password && !!errors.password}
-                    helperText={touched.password && errors.password}
-                    required
-                  />
-                </div>
+              <TextField
+                style={{ width: "80%" }}
+                error
+                id="email"
+                name="email"
+                label="Email"
+                type="email"
+                value={values.email}
+                onBlur={handleBlur}
+                error={!!touched.email && !!errors.email}
+                helperText={touched.email && errors.email}
+                // error={formik.errors.email}
+                variant="outlined"
+                margin="dense"
+                onChange={handleChange}
+                // value={formik.values.email}
+                fullWidth
+                required
+              />
+
+              <TextField
+                style={{ width: "80%" }}
+                id="password"
+                label="Password"
+                type="password"
+                requiredlabel="Password"
+                variant="outlined"
+                margin="dense"
+                onChange={handleChange}
+                value={values.password}
+                onBlur={handleBlur}
+                error={!!touched.password && !!errors.password}
+                helperText={touched.password && errors.password}
+                fullWidth
+                required
+              />
+              <div style={{ margin: "15px" }}>
                 <Button
+                  style={{ width: "80%" }}
                   onClick={handleSubmit}
+                  disabled={checkDisable()}
                   value="Submit"
                   variant="contained"
                   color="primary"
                   disableElevation
+                  fullWidth
                 >
                   Login
                 </Button>
-              </form>
-            </Typography>
-          </div>
-        </Container>
+              </div>
+              <Link to="/registration" variant="body2">
+                Not have an account ? Sign up here
+              </Link>
+              {/* or
+                <Button
+                  style={{ margin: "0 10px" }}
+                  href="Adduser"
+                  variant="contained"
+                >
+                  Add User
+                </Button> */}
+            </form>
+          </Typography>
+        </div>
       </div>
     </>
   );

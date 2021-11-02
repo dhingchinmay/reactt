@@ -22,7 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// const handleClose = () => {
+//   setOpen(false);
+// };
+
 const Header = (props) => {
+  const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const { isLoggedIn } = props;
 
@@ -32,6 +37,9 @@ const Header = (props) => {
     window.location.href = "/Login";
     // history.push("/Login"); // whichever component you want it to route to
   }
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <div className={classes.root}>
@@ -55,6 +63,7 @@ const Header = (props) => {
               style={{ margin: "0 10px" }}
               href="AddUser"
               variant="contained"
+              onClick={handleClickOpen}
             >
               Add User
             </Button>

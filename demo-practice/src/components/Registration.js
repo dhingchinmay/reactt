@@ -6,9 +6,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Header from "./Header";
-const axios = require("axios");
+// import Header from "./Header";
+import { withRouter } from "react-router";
 
+import Link from "@material-ui/core/Link";
+const axios = require("axios");
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -74,20 +76,30 @@ const BasicTextFields = (props) => {
   return (
     <>
       {/* <Header></Header> */}
-      <div style={{ textAlign: "center" }}>
-        <Container maxWidth="sm">
-          <Typography
-            component="div"
-            style={{
-              backgroundColor: "rgb(208, 214, 218)",
-              height: "330px",
-              padding: "15%",
-              margin: "2rem auto",
-              width: "350px",
-              color: "black",
-              borderRadius: "40px",
-            }}
-          >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
+        {/* <Header></Header> */}
+        <div
+          style={{
+            backgroundColor: "White",
+            height: "70%",
+            width: "50%",
+            borderRadius: "10px",
+            boxShadow: "2px 2px 5px black",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography component="div">
             <h1 style={{ color: "Black", fontFamily: "sans-serif" }}>
               Registration
             </h1>
@@ -98,7 +110,8 @@ const BasicTextFields = (props) => {
             >
               <div>
                 <TextField
-                  // id="name"
+                  error
+                  id="name"
                   label="Name"
                   name="name"
                   variant="outlined"
@@ -109,58 +122,67 @@ const BasicTextFields = (props) => {
                   error={!!touched.name && !!errors.name}
                   helperText={touched.name && errors.name}
                   // onClick={click}
+                  fullWidth
                   required
                 />
               </div>
+              {/* <div style={{ margin: "10px" }}> */}
+              <TextField
+                error
+                id="email"
+                name="email"
+                label="Email"
+                type="email"
+                variant="outlined"
+                margin="dense"
+                value={values.email}
+                onBlur={handleBlur}
+                error={!!touched.email && !!errors.email}
+                helperText={touched.email && errors.email}
+                // error={formik.errors.email}
+                onChange={handleChange}
+                // value={formik.values.email}
+                fullWidth
+                required
+              />
+              {/* </div> */}
+              {/* <div style={{ margin: "10px" }}> */}
+              <TextField
+                error
+                id="password"
+                label="Password"
+                type="password"
+                requiredlabel="Password"
+                variant="outlined"
+                margin="dense"
+                onChange={handleChange}
+                value={values.password}
+                onBlur={handleBlur}
+                error={!!touched.password && !!errors.password}
+                helperText={touched.password && errors.password}
+                required
+                fullWidth
+              />
+              {/* </div> */}
               <div style={{ margin: "10px" }}>
-                <TextField
-                  error
-                  id="email"
-                  name="email"
-                  label="Email"
-                  type="email"
-                  value={values.email}
-                  onBlur={handleBlur}
-                  error={!!touched.email && !!errors.email}
-                  helperText={touched.email && errors.email}
-                  // error={formik.errors.email}
-                  variant="outlined"
-                  margin="dense"
-                  onChange={handleChange}
-                  // value={formik.values.email}
-                  required
-                />
+                <Button
+                  onClick={handleSubmit}
+                  disabled={checkDisable()}
+                  value="Submit"
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                  fullWidth
+                >
+                  Register
+                </Button>
               </div>
-              <div style={{ margin: "10px" }}>
-                <TextField
-                  error
-                  id="password"
-                  label="Password"
-                  type="password"
-                  requiredlabel="Password"
-                  variant="outlined"
-                  margin="dense"
-                  onChange={handleChange}
-                  value={values.password}
-                  onBlur={handleBlur}
-                  error={!!touched.password && !!errors.password}
-                  helperText={touched.password && errors.password}
-                  // required
-                />
-              </div>
-              <Button
-                onClick={handleSubmit}
-                disabled={checkDisable()}
-                value="Submit"
-                variant="contained"
-                color="primary"
-                disableElevation
-              >
-                Register
-              </Button>
+              <Link to="/registration" variant="body2">
+                Existing Account ? Sign In here
+              </Link>
             </form>
           </Typography>
-        </Container>
+        </div>
       </div>
     </>
   );
@@ -178,11 +200,13 @@ const Form = withFormik({
       name: Yup.string().required("Enter valid name"),
       password: Yup.string().required("Enter valid password"),
     }),
-  async handleSubmit(values) {
+  async handleSubmit(values, { props }) {
     const base_url = "http://localhost:3001/users/register";
     axios
       .post(base_url, values)
       .then((response) => {
+        props.register();
+        props.history.push("/List");
         console.log(response);
       })
       .catch((error) => {
@@ -191,5 +215,5 @@ const Form = withFormik({
   },
   displayName: "BasicForm",
 })(BasicTextFields);
-export default Form;
+export default withRouter(Form);
 // export default BasicTextFields;

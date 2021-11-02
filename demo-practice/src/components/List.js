@@ -1,38 +1,31 @@
 import { useEffect } from "react";
-// import { useState } from "react";
 import React from "react";
-import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-// import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-// import ListItemText from "@material-ui/core/ListItemText";
-// import Divider from "@material-ui/core/Divider";
 import "./List.css";
 import Button from "@material-ui/core/Button";
 import Header from "./Header";
 import { connect } from "react-redux";
 import { setList } from "./store/actions/uiActions";
-// import React from "react";
-// import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-// import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SvgIcon from "@material-ui/core/SvgIcon";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import "./List.css";
-
-// import { Paper } from "@material-ui/core";
-// import { display } from "@mui/system";
+// import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { Container } from "@material-ui/core";
+import Form from "./Adduser";
+const axios = require("axios");
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 450,
-    backgroundColor: theme.palette.background.paper,
+    maxWidth: "450%",
+    // backgroundColor: theme.palette.background.paper,
   },
 }));
 
@@ -41,15 +34,23 @@ function ListDividers(props) {
   const { setEmployeeList } = props;
   const { employeeList } = props;
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [open, setOpen] = React.useState({
+    dialogOpen: false,
+    editUserData: {},
+  });
+
+  const handleClickOpen = (val) => () => {
+    // setOpen(true);
+    setOpen({
+      ...open,
+      dialogOpen: true,
+      editUserData: val,
+    });
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-
-  const [open, setOpen] = React.useState(false);
 
   useEffect(function () {
     const fetchData = async () => {
@@ -62,38 +63,92 @@ function ListDividers(props) {
     fetchData();
   }, []);
 
+  const handleRemove = (id) => () => {
+    // const id = this.state.id;
+    const url = `http://localhost:3001/users/${id}`;
+    // e.preventDefault();
+    axios
+      .delete(url)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleEdit = (id) => () => {
+    // const id = this.state.id;
+    const url = `http://localhost:3001/users/${id}`;
+    // e.preventDefault();
+    axios
+      .put(url)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // const handleEdit = (id) => () => {
+  //   // const id = this.state.id;
+  //   const url = `http://localhost:3001/users/${id}`;
+  //   // e.preventDefault();
+  //   axios
+  //     .patch(url)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
   return (
     <>
       <Header></Header>
-      {employeeList.length !== 0 &&
-        employeeList.map((val, count) => {
-          return (
-            <div
-              style={{
-                margin: "2px",
-                backgroundColor: "whiteSmoke",
-                boxSizing: "border-box",
-                borderRadius: "10px",
-              }}
-            >
-              {/* border: "2px black solid" */}
-              {/* <div className="list-display"> */}
-              <ListItem
-                key={count}
-                component="nav"
-                aria-label="mailbox folders"
-              >
-                <div style={{ width: "33%" }}>{val.name}</div>
-                <div style={{ width: "33%" }}>{val.email}</div>
+      <div>
+        <div
+          style={{
+            padding: "2px",
+            margin: "5px",
+            // border: "5px solid ",
+            borderStyle: "groove",
+          }}
+        >
+          {employeeList.length !== 0 &&
+            employeeList.map((val, count) => {
+              return (
                 <div
+                  className={classes.root}
                   style={{
-                    width: "33%",
-                    margin: "auto",
-                    display: "flex",
-                    justifyContent: "flex-end",
+                    margin: "4px",
+                    backgroundColor: "white",
+                    // boxSizing: "border-box",
+                    // borderRadius: "5px",
+                    boxShadow: "1px 1px 2px black",
+                    fontFamily: "sans-serif",
+                    width: "99%",
                   }}
                 >
-                  {/* <Button
+                  {/* border: "2px black solid" */}
+                  {/* <div className="list-display"> */}
+                  <ListItem
+                    key={count}
+                    component="nav"
+                    aria-label="mailbox folders"
+                  >
+                    <div style={{ width: "33%" }}>{val.name}</div>
+                    <div style={{ width: "33%" }}>{val.email}</div>
+                    <div
+                      style={{
+                        width: "33%",
+                        margin: "auto",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      {/* <Button
                     style={{ margin: "0 10px" }}
                     onClick={handleClickOpen}
                     value="Submit"
@@ -103,12 +158,13 @@ function ListDividers(props) {
                     Edit
                   </Button> */}
 
-                  <div>
-                    <EditIcon
-                      style={{ margin: "0 30px" }}
-                      onClick={handleClickOpen}
-                    />
-                    {/* <Button
+                      <div>
+                        <EditIcon
+                          style={{ margin: "0 30px" }}
+                          onClick={handleClickOpen(val)}
+                          // onClick={handleRemove(val._id)}
+                        />
+                        {/* <Button
                       style={{ margin: "0 10px" }}
                       value="Submit"
                       variant="contained"
@@ -118,10 +174,10 @@ function ListDividers(props) {
                       Edit
                     </Button> */}
 
-                    {/* <DeleteForeverIcon /> */}
-                    {/* </Grid> */}
-                    <DeleteIcon />
-                    {/* <Button
+                        {/* <DeleteForeverIcon /> */}
+                        {/* </Grid> */}
+                        <DeleteIcon onClick={handleRemove(val._id)} />
+                        {/* <Button
                       onClick={() => {}}
                       value="Submit"
                       variant="contained"
@@ -130,55 +186,56 @@ function ListDividers(props) {
                       Delete
                     </Button> */}
 
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="form-dialog-title"
-                    >
-                      <DialogTitle id="form-dialog-title">
-                        Edit Form
-                      </DialogTitle>
-                      <DialogContent>
-                        {/* <DialogContentText>Edit Fields</DialogContentText> */}
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="name"
-                          label="Name"
-                          type="email"
-                          fullWidth
-                        />
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="email"
-                          label="Email"
-                          type="email"
-                          fullWidth
-                        />
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="password"
-                          label="Password"
-                          fullWidth
-                        />
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                          Cancel
-                        </Button>
-                        <Button onClick={handleClose} color="primary">
-                          Update
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </div>
+                        <Dialog
+                          open={open.dialogOpen}
+                          onClose={handleClose}
+                          aria-labelledby="form-dialog-title"
+                        >
+                          <DialogTitle id="form-dialog-title">
+                            Edit Form
+                          </DialogTitle>
+                          <DialogContent>
+                            {/* <DialogContentText>Edit Fields</DialogContentText>
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="name"
+                              label="Name"
+                              type="email"
+                              fullWidth
+                              value={open.editUserData?.name}
+                            />
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="email"
+                              label="Email"
+                              type="email"
+                              fullWidth
+                              value={open.editUserData?.email}
+                            /> */}
+                            {<Form open={open.dialogOpen} editUserData={val} />}
+                          </DialogContent>
+                          {/* <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={handleEdit(open.editUserData._id)}
+                              color="primary"
+                            >
+                              Update
+                            </Button>
+                          </DialogActions> */}
+                        </Dialog>
+                      </div>
+                    </div>
+                  </ListItem>
                 </div>
-              </ListItem>
-            </div>
-          );
-        })}
+              );
+            })}
+        </div>
+      </div>
     </>
   );
 }

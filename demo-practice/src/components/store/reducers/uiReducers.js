@@ -1,4 +1,4 @@
-import { LOGIN, SETLIST } from "../actions/uiActions";
+import { LOGIN, SETLIST, DELETE_ITEM } from "../actions/uiActions";
 
 const intialState = {
   isLoggedIn: false,
@@ -16,6 +16,11 @@ const uiReducer = (state = intialState, action) => {
     case LOGIN:
       return { ...state, isLoggedIn: true };
 
+    case DELETE_ITEM:
+      return {
+        ...state,
+        items: state.items.filter((item, index) => index !== action.payload),
+      };
     default:
       return state;
   }

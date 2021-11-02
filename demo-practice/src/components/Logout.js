@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { baseUrl } from "../assets/js/helpers";
 
 export default class Logout extends Component {
   logout = () => {
