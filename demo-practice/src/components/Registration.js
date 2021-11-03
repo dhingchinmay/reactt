@@ -5,11 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-// import Header from "./Header";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
-import Link from "@material-ui/core/Link";
 const axios = require("axios");
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +84,6 @@ const BasicTextFields = (props) => {
           textAlign: "center",
         }}
       >
-        {/* <Header></Header> */}
         <div
           style={{
             backgroundColor: "White",
@@ -103,11 +100,7 @@ const BasicTextFields = (props) => {
             <h1 style={{ color: "Black", fontFamily: "sans-serif" }}>
               Registration
             </h1>
-            <form
-              // className={classes.root}
-              className={classes.center}
-              autoComplete="off"
-            >
+            <form className={classes.center} autoComplete="off">
               <div>
                 <TextField
                   error
@@ -121,12 +114,10 @@ const BasicTextFields = (props) => {
                   onChange={handleChange}
                   error={!!touched.name && !!errors.name}
                   helperText={touched.name && errors.name}
-                  // onClick={click}
                   fullWidth
                   required
                 />
               </div>
-              {/* <div style={{ margin: "10px" }}> */}
               <TextField
                 error
                 id="email"
@@ -177,7 +168,7 @@ const BasicTextFields = (props) => {
                   Register
                 </Button>
               </div>
-              <Link to="/registration" variant="body2">
+              <Link to="/Login" variant="body2">
                 Existing Account ? Sign In here
               </Link>
             </form>

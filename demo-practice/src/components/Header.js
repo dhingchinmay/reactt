@@ -4,12 +4,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
-
+import Form from "./Addemployee";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -40,7 +37,9 @@ const Header = (props) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -58,14 +57,13 @@ const Header = (props) => {
               List
             </Button>
           )}
-          {!isLoggedIn && (
+          {isLoggedIn && (
             <Button
               style={{ margin: "0 10px" }}
-              href="AddUser"
               variant="contained"
               onClick={handleClickOpen}
             >
-              Add User
+              Add Employee
             </Button>
           )}
           {!isLoggedIn && (
@@ -97,6 +95,7 @@ const Header = (props) => {
             </Button>
           )}
         </Toolbar>
+        {open && <Form open={open} onClose={onClose} />}
       </AppBar>
     </div>
   );

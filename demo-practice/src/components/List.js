@@ -3,24 +3,20 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import "./List.css";
-import Button from "@material-ui/core/Button";
 import Header from "./Header";
 import { connect } from "react-redux";
 import { setList } from "./store/actions/uiActions";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import "./List.css";
-// import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import { Container } from "@material-ui/core";
-import Form from "./Adduser";
+import Form from "./Addemployee";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import { bindActionCreators } from "redux";
+import { getAllEmployees } from "./store/actions/uiActions";
 const axios = require("axios");
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -32,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 function ListDividers(props) {
   const classes = useStyles();
   const { setEmployeeList } = props;
-  const { employeeList } = props;
+  const { employeeList, getAllEmployees } = props;
 
   const [open, setOpen] = React.useState({
     dialogOpen: false,
@@ -49,18 +45,22 @@ function ListDividers(props) {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen({
+      ...open,
+      dialogOpen: false,
+    });
   };
 
   useEffect(function () {
-    const fetchData = async () => {
-      const url = "http://localhost:3001/users/all";
-      const response = await fetch(url);
-      const info = await response.json();
-      setEmployeeList(info);
-      console.log(info);
-    };
-    fetchData();
+    // const fetchData = async () => {
+    //   const url = "http://localhost:3001/users/all";
+    //   const response = await fetch(url);
+    //   const info = await response.json();
+    //   setEmployeeList(info);
+    //   console.log(info);
+    // };
+    // fetchData();
+    getAllEmployees();
   }, []);
 
   const handleRemove = (id) => () => {
@@ -77,19 +77,19 @@ function ListDividers(props) {
       });
   };
 
-  const handleEdit = (id) => () => {
-    // const id = this.state.id;
-    const url = `http://localhost:3001/users/${id}`;
-    // e.preventDefault();
-    axios
-      .put(url)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const handleEdit = (id) => () => {
+  //   // const id = this.state.id;
+  //   const url = `http://localhost:3001/employee/${id}`;
+  //   // e.preventDefault();
+  //   axios
+  //     .put(url)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   // const handleEdit = (id) => () => {
   //   // const id = this.state.id;
@@ -164,6 +164,9 @@ function ListDividers(props) {
                           onClick={handleClickOpen(val)}
                           // onClick={handleRemove(val._id)}
                         />
+
+                        <DeleteIcon onClick={handleRemove(val._id)} />
+
                         {/* <Button
                       style={{ margin: "0 10px" }}
                       value="Submit"
@@ -176,7 +179,7 @@ function ListDividers(props) {
 
                         {/* <DeleteForeverIcon /> */}
                         {/* </Grid> */}
-                        <DeleteIcon onClick={handleRemove(val._id)} />
+
                         {/* <Button
                       onClick={() => {}}
                       value="Submit"
@@ -214,7 +217,13 @@ function ListDividers(props) {
                               fullWidth
                               value={open.editUserData?.email}
                             /> */}
-                            {<Form open={open.dialogOpen} editUserData={val} />}
+                            {
+                              <Form
+                                open={open.dialogOpen}
+                                onClose={handleClose}
+                                editUserData={val}
+                              />
+                            }
                           </DialogContent>
                           {/* <DialogActions>
                             <Button onClick={handleClose} color="primary">
@@ -247,8 +256,14 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setEmployeeList: (data) => dispatch(setList(data)),
-  };
+  return bindActionCreators(
+    {
+      getAllEmployees,
+    },
+    dispatch
+  );
+  // return {
+  //   // setEmployeeList: (data) => dispatch(setList(data)),
+  // };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ListDividers);

@@ -1,20 +1,19 @@
 import * as Yup from "yup";
 import React from "react";
-import { withFormik, Formik } from "formik";
+import { withFormik } from "formik";
 import { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-// const axios = require("axios");
 import axios from "axios";
-// import Header from "./Header";
 import { connect } from "react-redux";
 import { login } from "./store/actions/uiActions";
 import "./Login.css";
 import { withRouter } from "react-router";
-import Link from "@material-ui/core/Link";
+import { bindActionCreators } from "redux";
+import { Link } from "react-router-dom";
+// import { login } from "./store/actions/uiActions";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -37,17 +36,11 @@ const useStyles = makeStyles((theme) => ({
 const TextFields = (props) => {
   const { errors, touched, handleBlur, handleChange, values, handleSubmit } =
     props;
+  const { login } = props;
   const classes = useStyles();
 
   useEffect(function () {
-    const fetchData = async () => {
-      const url = "http://localhost:3001/users/all";
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log("data is", data);
-      return data;
-    };
-    const data = fetchData();
+    login();
   }, []);
 
   // const formik = useFormik({
@@ -179,7 +172,7 @@ const TextFields = (props) => {
               {/* or
                 <Button
                   style={{ margin: "0 10px" }}
-                  href="Adduser"
+                  href="Addemployee"
                   variant="contained"
                 >
                   Add User
@@ -204,31 +197,60 @@ const Form = withFormik({
       password: Yup.string().required("Enter valid password"),
     }),
   async handleSubmit(values, { props }) {
-    console.log("props", props);
-    const base_url = "http://localhost:3001/users/login";
-    axios
-      .post(base_url, values)
-      .then((response) => {
-        let token = response.data.token;
-        localStorage.setItem("token", token);
-        props.login();
-        console.log(response);
-        props.history.push("/List");
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+    // console.log("props", props);
+    // const base_url = "http://localhost:3001/users/login";
+    // axios
+    //   .post(base_url, values)
+    //   .then((response) => {
+    //   //   let token = response.data.token;
+    //   //   localStorage.setItem("token", token);
+    //   //   props.login();
+    //   //   console.log(response);
+    //   //   props.history.push("/List");
+    //   // })
+    //   .catch((error) => {
+    //     console.log(error.response);
+    //   });
+    props.login(values.email, values.password);
+    props.history.push("/List");
   },
   displayName: "BasicForm",
 })(TextFields);
 
+// const mapStateToProps = (state) => {
+//   return {
+//     employeeList: state.ui.employeeList,
+//   };
+// };
+
+// const mapDispatchToProps = (dispatch) => {
+//   return bindActionCreators(
+//     {
+//       getAllEmployees,
+//     },
+//     dispatch
+//   );
+//   // return {
+//   //   // setEmployeeList: (data) => dispatch(setList(data)),
+//   // };
+// };
+// export default connect(mapStateToProps, mapDispatchToProps)(ListDividers);
+
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    employeeList: state.ui.employeeList,
+  };
 };
 const mapDispatchToProps = (dispatch) => {
-  return {
-    login: () => dispatch(login()),
-  };
+  return bindActionCreators(
+    {
+      login,
+    },
+    dispatch
+  );
+  // return {
+  //   setEmployeeList: (data) => dispatch(login(data)),
+  // };
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form));

@@ -14,6 +14,7 @@ const uiReducer = (state = intialState, action) => {
         employeeList: [...state.employeeList, ...action.payload],
       };
     case LOGIN:
+      console.log("check login reducer");
       return { ...state, isLoggedIn: true };
 
     case DELETE_ITEM:
