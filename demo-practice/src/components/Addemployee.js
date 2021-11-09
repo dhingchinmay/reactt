@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import React from "react";
+// import { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -12,8 +13,13 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
+import { addemployee } from "./store/actions/uiActions";
+import { withRouter } from "react-router";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+// import { Link } from "react-router-dom";
 import FormLabel from "@material-ui/core/FormLabel";
-import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogContentText from "@material-ui/core/DialogContentText";
 const axios = require("axios");
 
 const FormDialog = (props) => {
@@ -27,8 +33,13 @@ const FormDialog = (props) => {
     open,
     onClose,
   } = props;
+  const { addemployee } = props;
   // console.log("props of form", props);
-  const [openG, setOpen] = React.useState(false);
+  // const [openG, setOpen] = React.useState(false);
+
+  // useEffect(function () {
+  //   addemployee();
+  // }, []);
 
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -96,7 +107,7 @@ const FormDialog = (props) => {
               onChange={handleChange}
               fullWidth
             />
-            <TextField
+            {/* <TextField
               error
               id="password"
               label="Password"
@@ -111,17 +122,30 @@ const FormDialog = (props) => {
               margin="dense"
               onChange={handleChange}
               fullWidth
-            />
+            /> */}
             <TextField
               error
               id="phone"
               label="Phone"
               type="phone"
-              type="phone"
               value={values.phone}
               onBlur={handleBlur}
               error={!!touched.phone && !!errors.phone}
               helperText={touched.phone && errors.phone}
+              variant="outlined"
+              margin="dense"
+              onChange={handleChange}
+              fullWidth
+            />
+            <TextField
+              error
+              id="gender"
+              label="gender"
+              type="gender"
+              value={values.gender}
+              onBlur={handleBlur}
+              error={!!touched.gender && !!errors.gender}
+              helperText={touched.gender && errors.gender}
               variant="outlined"
               margin="dense"
               onChange={handleChange}
@@ -144,11 +168,12 @@ const FormDialog = (props) => {
               fullWidth
             />
             <FormControl component="fieldset">
-              <FormLabel component="legend">Gender</FormLabel>
+              {/* <FormLabel component="legend">Gender</FormLabel>
               <RadioGroup
                 aria-label="gender"
                 defaultValue="female"
                 name="radio-buttons-group"
+                value={values.gender}
               >
                 <FormControlLabel
                   value="female"
@@ -165,7 +190,7 @@ const FormDialog = (props) => {
                   control={<Radio />}
                   label="Other"
                 />
-              </RadioGroup>
+              </RadioGroup> */}
               <Button color="secondary" variant="contained" type="submit">
                 Submit
               </Button>
@@ -193,19 +218,16 @@ const Form = withFormik({
   mapPropsToValues: (props) => ({
     name: props.editUserData?.name ? props.editUserData?.name : "",
     email: props.editUserData?.email ? props.editUserData?.email : "",
-    password: props.editUserData?.password ? props.editUserData?.password : "",
     phone: props.editUserData?.phone ? props.editUserData?.phone : "",
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
+    dob: props.editUserData?.dob ? props.editUserData?.dob : "",
+    gender: props.editUserData?.gender ? props.editUserData?.gender : "",
   }),
 
   validationSchema: (props) =>
     Yup.object().shape({
       name: Yup.string().required("Enter valid name"),
       email: Yup.string().email("Enter valid email").required(),
-      password: Yup.string().required("Enter valid password"),
+      // password: Yup.string().required("Enter valid password"),
       phone: Yup.string()
         .required("This field is Required")
         .matches(
@@ -215,35 +237,56 @@ const Form = withFormik({
     }),
 
   async handleSubmit(values, { props }) {
-    console.log("props of register", props);
-    const base_url = "http://localhost:3001/employee";
-    if (props.editUserData) {
-      // edit user
-      axios
-        .put(
-          base_url,
-          { data: values },
-          {
-            params: {
-              id: props.editUserData._id,
-            },
-          }
-        )
-        .then((resp) => console.log("Response ", resp));
-    } else {
-      axios
-        .post(base_url + "/add", values)
-        .then((response) => {
-          let token = response.data.token;
-          localStorage.setItem("token", token);
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-    }
+    // console.log("going to submit", props);
+    //   const base_url = "http://localhost:3001/employee";
+    //   if (props.editUserData) {
+    //     // edit user
+    //     axios
+    //       .put(
+    //         base_url,
+    //         { data: values },
+    //         {
+    //           params: {
+    //             id: props.editUserData._id,
+    //           },
+    //         }
+    //       )
+    //       .then((resp) => console.log("Response ", resp));
+    //   } else {
+    //     axios
+    //       .post(base_url + "/add", values)
+    //       .then((response) => {
+    //         let token = response.data.token;
+    //         localStorage.setItem("token", token);
+    //         console.log(response);
+    //
+    //       })
+    //       .catch((error) => {
+    //         console.log(error.response);
+    //       });
+    //   }
+    console.log("values", values);
+    props.addemployee(values);
+    props.history.push("/List");
   },
   displayName: "BasicForm",
 })(FormDialog);
 
-export default Form;
+const mapStateToProps = (state) => {
+  return {
+    employeeList: state.ui.employeeList,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      addemployee,
+    },
+    dispatch
+  );
+  // return {
+  //   setEmployeeList: (data) => dispatch(login(data)),
+  // };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form));

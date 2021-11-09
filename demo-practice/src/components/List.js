@@ -1,11 +1,19 @@
 import { useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Button,
+} from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import "./List.css";
 import Header from "./Header";
 import { connect } from "react-redux";
-import { setList } from "./store/actions/uiActions";
+// import { setList } from "./store/actions/uiActions";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -13,9 +21,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import "./List.css";
 import Form from "./Addemployee";
-import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogContentText from "@material-ui/core/DialogContentText";
 import { bindActionCreators } from "redux";
-import { getAllEmployees } from "./store/actions/uiActions";
+import {
+  getAllEmployees,
+  deleteEmployee,
+  editemployee,
+} from "./store/actions/uiActions";
 const axios = require("axios");
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
 function ListDividers(props) {
   const classes = useStyles();
   const { setEmployeeList } = props;
-  const { employeeList, getAllEmployees } = props;
-
+  const { employeeList, getAllEmployees, deleteEmployee } = props;
+  console.log("detlete", deleteEmployee);
   const [open, setOpen] = React.useState({
     dialogOpen: false,
-    editUserData: {},
+    editEmployeeData: {},
   });
 
   const handleClickOpen = (val) => () => {
@@ -40,7 +52,7 @@ function ListDividers(props) {
     setOpen({
       ...open,
       dialogOpen: true,
-      editUserData: val,
+      editEmployeeData: val,
     });
   };
 
@@ -65,16 +77,18 @@ function ListDividers(props) {
 
   const handleRemove = (id) => () => {
     // const id = this.state.id;
-    const url = `http://localhost:3001/users/${id}`;
-    // e.preventDefault();
-    axios
-      .delete(url)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // const url = `http://localhost:3001/employee/${id}`;
+    // // e.preventDefault();
+    // axios
+    //   .delete(url)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    deleteEmployee(id);
+    editemployee(id);
   };
 
   // const handleEdit = (id) => () => {
@@ -107,6 +121,7 @@ function ListDividers(props) {
   return (
     <>
       <Header></Header>
+
       <div>
         <div
           style={{
@@ -138,8 +153,9 @@ function ListDividers(props) {
                     component="nav"
                     aria-label="mailbox folders"
                   >
-                    <div style={{ width: "33%" }}>{val.name}</div>
-                    <div style={{ width: "33%" }}>{val.email}</div>
+                    <TableCell style={{ width: "33%" }}>{val.Name}</TableCell>
+                    <TableCell style={{ width: "33%" }}>{val.email}</TableCell>
+
                     <div
                       style={{
                         width: "33%",
@@ -161,7 +177,7 @@ function ListDividers(props) {
                       <div>
                         <EditIcon
                           style={{ margin: "0 30px" }}
-                          onClick={handleClickOpen(val)}
+                          onClick={handleClickOpen(val._id)}
                           // onClick={handleRemove(val._id)}
                         />
 
@@ -221,7 +237,7 @@ function ListDividers(props) {
                               <Form
                                 open={open.dialogOpen}
                                 onClose={handleClose}
-                                editUserData={val}
+                                editEmployeeData={val}
                               />
                             }
                           </DialogContent>
@@ -259,6 +275,8 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getAllEmployees,
+      deleteEmployee,
+      editemployee,
     },
     dispatch
   );

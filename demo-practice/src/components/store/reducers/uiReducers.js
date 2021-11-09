@@ -1,4 +1,4 @@
-import { LOGIN, SETLIST, DELETE_ITEM } from "../actions/uiActions";
+import { LOGIN, SETLIST, DELETE_ITEM, ADDEMPLOYEE } from "../actions/uiActions";
 
 const intialState = {
   isLoggedIn: false,
@@ -17,10 +17,24 @@ const uiReducer = (state = intialState, action) => {
       console.log("check login reducer");
       return { ...state, isLoggedIn: true };
 
-    case DELETE_ITEM:
+    case ADDEMPLOYEE:
       return {
         ...state,
-        items: state.items.filter((item, index) => index !== action.payload),
+        employeeList: state.employeeList.concat({
+          _id: action.payload._id,
+          Name: action.payload.Name,
+          email: action.payload.email,
+          phone: action.payload.phone,
+        }),
+      };
+
+    case DELETE_ITEM:
+      console.log("/* action payload */", action.payload);
+      return {
+        ...state,
+        employeeList: state.employeeList.filter((item) => {
+          return item._id !== action.payload;
+        }),
       };
     default:
       return state;

@@ -103,6 +103,7 @@ const BasicTextFields = (props) => {
             <form className={classes.center} autoComplete="off">
               <div>
                 <TextField
+                  style={{ width: "80%" }}
                   error
                   id="name"
                   label="Name"
@@ -119,6 +120,7 @@ const BasicTextFields = (props) => {
                 />
               </div>
               <TextField
+                style={{ width: "80%" }}
                 error
                 id="email"
                 name="email"
@@ -139,6 +141,7 @@ const BasicTextFields = (props) => {
               {/* </div> */}
               {/* <div style={{ margin: "10px" }}> */}
               <TextField
+                style={{ width: "80%" }}
                 error
                 id="password"
                 label="Password"
@@ -155,8 +158,9 @@ const BasicTextFields = (props) => {
                 fullWidth
               />
               {/* </div> */}
-              <div style={{ margin: "10px" }}>
+              <div style={{ margin: "15px" }}>
                 <Button
+                  style={{ width: "80%" }}
                   onClick={handleSubmit}
                   disabled={checkDisable()}
                   value="Submit"
@@ -198,7 +202,7 @@ const Form = withFormik({
       .then((response) => {
         props.register();
         props.history.push("/List");
-        console.log(response);
+        console.log(values);
       })
       .catch((error) => {
         console.log(error.response);

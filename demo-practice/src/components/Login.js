@@ -6,13 +6,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import axios from "axios";
+// import axios from "axios";
 import { connect } from "react-redux";
 import { login } from "./store/actions/uiActions";
 import "./Login.css";
 import { withRouter } from "react-router";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import { login } from "./store/actions/uiActions";
 
 // const useStyles = makeStyles((theme) => ({
@@ -139,6 +141,7 @@ const TextFields = (props) => {
               <TextField
                 style={{ width: "80%" }}
                 id="password"
+                name="password"
                 label="Password"
                 type="password"
                 requiredlabel="Password"
@@ -211,8 +214,13 @@ const Form = withFormik({
     //   .catch((error) => {
     //     console.log(error.response);
     //   });
-    props.login(values.email, values.password);
-    props.history.push("/List");
+    const notify = () => toast("Wow so easy!");
+    const resp = await props.login(values.email, values.password);
+    if (resp === 200) {
+      props.history.push("/List");
+    } else {
+      return notify();
+    }
   },
   displayName: "BasicForm",
 })(TextFields);
